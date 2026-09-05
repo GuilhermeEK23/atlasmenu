@@ -9,22 +9,35 @@ import Categories from "@/pages/Categories/Categories";
 import Customers from "@/pages/Customers/Customers";
 import Reports from "@/pages/Reports/Reports";
 import Settings from "@/pages/Settings/Settings";
+import { PublicRoute } from "@/components/auth/PublicRoute";
+import Login from "@/pages/Auth/Login";
+import Register from "@/pages/Auth/Register";
+import { PrivateRoute } from "@/components/auth/PrivateRoute";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route element={<DashboardLayout />}>
-        <Route index element={<Navigate to="/painel" replace />} />
-        <Route path="/painel" element={<Dashboard />} />
-        <Route path="/pedidos" element={<Orders />} />
-        <Route path="/mesas" element={<Tables />} />
-        <Route path="/cardapio" element={<Menu />} />
-        <Route path="/produtos" element={<Products />} />
-        <Route path="/categorias" element={<Categories />} />
-        <Route path="/clientes" element={<Customers />} />
-        <Route path="/relatorios" element={<Reports />} />
-        <Route path="/configuracoes" element={<Settings />} />
-        <Route path="*" element={<Navigate to="/painel" replace />} />
+      {/* Rotas públicas */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Register />} />
+      </Route>
+
+      {/* Rotas protegidas */}
+      <Route element={<PrivateRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route index element={<Navigate to="/painel" replace />} />
+          <Route path="/painel" element={<Dashboard />} />
+          <Route path="/pedidos" element={<Orders />} />
+          <Route path="/mesas" element={<Tables />} />
+          <Route path="/cardapio" element={<Menu />} />
+          <Route path="/produtos" element={<Products />} />
+          <Route path="/categorias" element={<Categories />} />
+          <Route path="/clientes" element={<Customers />} />
+          <Route path="/relatorios" element={<Reports />} />
+          <Route path="/configuracoes" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/painel" replace />} />
+        </Route>
       </Route>
     </Routes>
   );
