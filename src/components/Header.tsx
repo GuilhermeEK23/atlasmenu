@@ -1,11 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
-import { Bell, ChevronDown, Menu, Search, User, FileEdit, Settings, CreditCard, LogOut } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import {
+  Bell,
+  ChevronDown,
+  Menu,
+  Search,
+  User,
+  FileEdit,
+  Settings,
+  CreditCard,
+  LogOut,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface HeaderProps {
   onOpenMobileMenu: () => void;
 }
 
 export default function Header({ onOpenMobileMenu }: HeaderProps) {
+  const { signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -15,8 +27,8 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
         setProfileOpen(false);
       }
     };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
   return (
@@ -61,9 +73,14 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
               <p className="text-sm font-medium leading-tight text-text-primary">
                 Restaurante
               </p>
-              <p className="text-xs leading-tight text-text-secondary">Administrador</p>
+              <p className="text-xs leading-tight text-text-secondary">
+                Administrador
+              </p>
             </div>
-            <ChevronDown size={16} className="hidden text-text-secondary sm:block" />
+            <ChevronDown
+              size={16}
+              className="hidden text-text-secondary sm:block"
+            />
           </button>
 
           {profileOpen && (
@@ -73,7 +90,9 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
                   R
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-text-primary">Restaurante</p>
+                  <p className="text-sm font-medium text-text-primary">
+                    Restaurante
+                  </p>
                   <p className="text-xs text-text-secondary">Administrador</p>
                 </div>
               </div>
@@ -84,7 +103,9 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
                 </button>
                 <button className="nav-item w-full rounded-none px-4">
                   <FileEdit size={16} />
-                  <span className="flex-1 text-left">Preencher informações</span>
+                  <span className="flex-1 text-left">
+                    Preencher informações
+                  </span>
                   <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-semibold text-brand">
                     Pendente
                   </span>
@@ -99,7 +120,10 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
                 </button>
               </div>
               <div className="border-t border-border py-1.5">
-                <button className="nav-item w-full rounded-none px-4 text-danger hover:text-danger">
+                <button
+                  className="nav-item w-full rounded-none px-4 text-danger hover:text-danger"
+                  onClick={signOut}
+                >
                   <LogOut size={16} />
                   Sair
                 </button>
