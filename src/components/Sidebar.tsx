@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import {
   Home,
   ShoppingBag,
@@ -14,18 +14,19 @@ import {
   LogOut,
   ChefHat,
   X,
-} from 'lucide-react';
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
-  { to: '/painel', label: 'Painel', icon: Home },
-  { to: '/pedidos', label: 'Pedidos', icon: ShoppingBag },
-  { to: '/mesas', label: 'Mesas', icon: Grid3x3 },
-  { to: '/cardapio', label: 'Cardápio', icon: BookOpen },
-  { to: '/produtos', label: 'Produtos', icon: Package },
-  { to: '/categorias', label: 'Categorias', icon: Tag },
-  { to: '/clientes', label: 'Clientes', icon: Users },
-  { to: '/relatorios', label: 'Relatórios', icon: BarChart3 },
-  { to: '/configuracoes', label: 'Configurações', icon: Settings },
+  { to: "/painel", label: "Painel", icon: Home },
+  { to: "/pedidos", label: "Pedidos", icon: ShoppingBag },
+  { to: "/mesas", label: "Mesas", icon: Grid3x3 },
+  { to: "/cardapio", label: "Cardápio", icon: BookOpen },
+  { to: "/produtos", label: "Produtos", icon: Package },
+  { to: "/categorias", label: "Categorias", icon: Tag },
+  { to: "/clientes", label: "Clientes", icon: Users },
+  { to: "/relatorios", label: "Relatórios", icon: BarChart3 },
+  { to: "/configuracoes", label: "Configurações", icon: Settings },
 ];
 
 interface SidebarProps {
@@ -33,7 +34,11 @@ interface SidebarProps {
   onCloseMobile?: () => void;
 }
 
-export default function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
+export default function Sidebar({
+  mobileOpen = false,
+  onCloseMobile,
+}: SidebarProps) {
+  const { signOut } = useAuth();
   return (
     <>
       {mobileOpen && (
@@ -46,7 +51,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarPr
 
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-border bg-bg-900 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between px-5 pt-6 pb-5">
@@ -79,7 +84,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarPr
               to={item.to}
               onClick={onCloseMobile}
               className={({ isActive }) =>
-                `nav-item ${isActive ? 'nav-item-active' : ''}`
+                `nav-item ${isActive ? "nav-item-active" : ""}`
               }
             >
               <item.icon size={18} />
@@ -102,7 +107,10 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarPr
             Central de ajuda
           </button>
 
-          <button className="nav-item w-full text-danger hover:text-danger">
+          <button
+            className="nav-item w-full text-danger hover:text-danger"
+            onClick={signOut}
+          >
             <LogOut size={18} />
             Sair
           </button>
@@ -115,7 +123,9 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarPr
               <p className="truncate text-sm font-medium text-text-primary">
                 Restaurante
               </p>
-              <p className="truncate text-xs text-text-secondary">Administrador</p>
+              <p className="truncate text-xs text-text-secondary">
+                Administrador
+              </p>
             </div>
           </div>
         </div>
