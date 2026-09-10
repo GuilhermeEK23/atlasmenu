@@ -10,7 +10,7 @@ import {
   CreditCard,
   LogOut,
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 
 interface HeaderProps {
   onOpenMobileMenu: () => void;

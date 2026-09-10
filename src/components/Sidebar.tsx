@@ -15,7 +15,7 @@ import {
   ChefHat,
   X,
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 
 const navItems = [
   { to: "/painel", label: "Painel", icon: Home },

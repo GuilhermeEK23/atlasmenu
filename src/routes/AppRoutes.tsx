@@ -9,10 +9,15 @@ import Categories from "@/pages/Categories/Categories";
 import Customers from "@/pages/Customers/Customers";
 import Reports from "@/pages/Reports/Reports";
 import Settings from "@/pages/Settings/Settings";
-import { PublicRoute } from "@/components/auth/PublicRoute";
+
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
-import { PrivateRoute } from "@/components/auth/PrivateRoute";
+
+import RestaurantOnboarding from "@/pages/Onboarding/RestaurantOnboarding";
+import PublicRoute from "./PublicRoute";
+import PrivateRoute from "./PrivateRoute";
+import RestaurantGuard from "./RestaurantGuard";
+import OnboardingGuard from "./OnboardingGuard";
 
 export default function AppRoutes() {
   return (
@@ -25,18 +30,26 @@ export default function AppRoutes() {
 
       {/* Rotas protegidas */}
       <Route element={<PrivateRoute />}>
-        <Route element={<DashboardLayout />}>
-          <Route index element={<Navigate to="/painel" replace />} />
-          <Route path="/painel" element={<Dashboard />} />
-          <Route path="/pedidos" element={<Orders />} />
-          <Route path="/mesas" element={<Tables />} />
-          <Route path="/cardapio" element={<Menu />} />
-          <Route path="/produtos" element={<Products />} />
-          <Route path="/categorias" element={<Categories />} />
-          <Route path="/clientes" element={<Customers />} />
-          <Route path="/relatorios" element={<Reports />} />
-          <Route path="/configuracoes" element={<Settings />} />
-          <Route path="*" element={<Navigate to="/painel" replace />} />
+        {/* Usuário autenticado sem restaurante */}
+        <Route element={<OnboardingGuard />}>
+          <Route path="/onboarding" element={<RestaurantOnboarding />} />
+        </Route>
+
+        {/* Usuário autenticado com restaurante */}
+        <Route element={<RestaurantGuard />}>
+          <Route element={<DashboardLayout />}>
+            <Route index element={<Navigate to="/painel" replace />} />
+            <Route path="/painel" element={<Dashboard />} />
+            <Route path="/pedidos" element={<Orders />} />
+            <Route path="/mesas" element={<Tables />} />
+            <Route path="/cardapio" element={<Menu />} />
+            <Route path="/produtos" element={<Products />} />
+            <Route path="/categorias" element={<Categories />} />
+            <Route path="/clientes" element={<Customers />} />
+            <Route path="/relatorios" element={<Reports />} />
+            <Route path="/configuracoes" element={<Settings />} />
+            <Route path="*" element={<Navigate to="/painel" replace />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
