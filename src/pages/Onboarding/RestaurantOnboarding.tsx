@@ -22,30 +22,16 @@ const RestaurantOnboarding = () => {
     }
 
     // 1. Criar restaurante
-    const { data: restaurant, error: restaurantError } = await supabase
-      .from("restaurants")
-      .insert({
-        name: restaurantName,
-        slug,
-      })
-      .select()
-      .single();
+    const { data: restaurant, error: restaurantError } = await supabase.rpc(
+      "create_restaurant",
+      {
+        restaurant_name: restaurantName,
+        restaurant_slug: slug,
+      },
+    );
 
     if (restaurantError) {
       throw restaurantError;
-    }
-
-    // 2. Vincular usuário ao restaurante
-    const { error: relationError } = await supabase
-      .from("restaurant_users")
-      .insert({
-        restaurant_id: restaurant.id,
-        user_id: user.id,
-        role: "owner",
-      });
-
-    if (relationError) {
-      throw relationError;
     }
 
     await refreshRestaurant();
