@@ -114,20 +114,6 @@ export default function Sidebar({
             <LogOut size={18} />
             Sair
           </button>
-
-          <div className="flex items-center gap-2.5 rounded-xl border border-border bg-surface-raised px-3 py-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-              R
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-text-primary">
-                Restaurante
-              </p>
-              <p className="truncate text-xs text-text-secondary">
-                Administrador
-              </p>
-            </div>
-          </div>
         </div>
       </aside>
     </>

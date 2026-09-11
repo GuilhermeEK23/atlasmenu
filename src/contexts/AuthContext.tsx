@@ -3,9 +3,15 @@ import type { Session, User } from "@supabase/supabase-js";
 
 import { supabase } from "../lib/supabase";
 
+interface Profile {
+  id: string;
+  name: string;
+  avatar_url: string | null;
+}
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  profile: Profile | null;
   loading: boolean;
 
   signIn: (email: string, password: string) => Promise<void>;
@@ -19,10 +25,25 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-
   const [session, setSession] = useState<Session | null>(null);
-
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  async function loadProfile(userId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, name, avatar_url")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Erro ao carregar perfil:", error);
+      setProfile(null);
+      return;
+    }
+
+    setProfile(data);
+  }
 
   useEffect(() => {
     async function loadSession() {
@@ -33,6 +54,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
 
+      if (session?.user) {
+        await loadProfile(session.user.id);
+      }
+
       setLoading(false);
     }
 
@@ -40,9 +65,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (session?.user) {
+        await loadProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
 
       setLoading(false);
     });
@@ -101,6 +132,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         user,
         session,
+        profile,
         loading,
         signIn,
         signUp,

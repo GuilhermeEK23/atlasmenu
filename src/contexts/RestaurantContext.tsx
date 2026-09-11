@@ -1,5 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
+import { RestaurantRole } from "@/utils/getRoleLabel";
 import { createContext, useEffect, useState } from "react";
 
 interface Restaurant {
@@ -11,7 +12,7 @@ interface Restaurant {
 
 interface RestaurantContextType {
   restaurant: Restaurant | null;
-  role: string | null;
+  role: RestaurantRole | null;
   loading: boolean;
   refreshRestaurant: () => Promise<void>;
 }
@@ -28,7 +29,7 @@ export const RestaurantProvider = ({
   const { user, loading: authLoading } = useAuth();
 
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<RestaurantRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function loadRestaurant() {

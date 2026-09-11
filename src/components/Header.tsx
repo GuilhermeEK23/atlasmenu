@@ -11,13 +11,16 @@ import {
   LogOut,
 } from "lucide-react";
 import useAuth from "@/hooks/useAuth";
+import useRestaurant from "@/hooks/useRestaurant";
+import { getRoleLabel } from "@/utils/getRoleLabel";
 
 interface HeaderProps {
   onOpenMobileMenu: () => void;
 }
 
 export default function Header({ onOpenMobileMenu }: HeaderProps) {
-  const { signOut } = useAuth();
+  const { profile, signOut } = useAuth();
+  const { role } = useRestaurant();
   const [profileOpen, setProfileOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -67,14 +70,22 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
             className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-white/5"
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-              R
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt="Avatar"
+                  className="h-full w-full rounded-full object-cover"
+                />
+              ) : (
+                profile?.name?.[0] || "U"
+              )}
             </div>
             <div className="hidden text-left sm:block">
               <p className="text-sm font-medium leading-tight text-text-primary">
-                Restaurante
+                {profile?.name || "Usuário"}
               </p>
               <p className="text-xs leading-tight text-text-secondary">
-                Administrador
+                {getRoleLabel(role!)}
               </p>
             </div>
             <ChevronDown
@@ -87,13 +98,23 @@ export default function Header({ onOpenMobileMenu }: HeaderProps) {
             <div className="absolute right-0 top-full mt-2 w-64 overflow-hidden rounded-2xl border border-border bg-surface-card shadow-soft">
               <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-                  R
+                  {profile?.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt="Avatar"
+                      className="h-full w-full rounded-full object-cover"
+                    />
+                  ) : (
+                    profile?.name?.[0] || "U"
+                  )}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-text-primary">
-                    Restaurante
+                    {profile?.name || "Usuário"}
                   </p>
-                  <p className="text-xs text-text-secondary">Administrador</p>
+                  <p className="text-xs text-text-secondary">
+                    {getRoleLabel(role!)}
+                  </p>
                 </div>
               </div>
               <div className="py-1.5">
