@@ -4,7 +4,7 @@ import useAuth from "@/hooks/useAuth";
 import useRestaurant from "@/hooks/useRestaurant";
 import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const RestaurantOnboarding = () => {
@@ -52,6 +52,21 @@ const RestaurantOnboarding = () => {
       setLoading(false);
     }
   };
+
+  const createSlug = (name: string) => {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+  };
+
+  useEffect(() => {
+    setSlug(createSlug(restaurantName));
+  }, [restaurantName]);
 
   return (
     <div className="flex flex-col items-center">
