@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import FormInput from "@/components/FormInput";
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { AuthApiError } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";

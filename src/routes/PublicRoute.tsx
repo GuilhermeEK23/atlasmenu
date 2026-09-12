@@ -1,12 +1,12 @@
-import { useAuth } from "@/hooks/useAuth";
+import LoadingPage from "@/components/LoadingPage";
+import useAuth from "@/hooks/useAuth";
 import { Navigate, Outlet } from "react-router-dom";
-import LoadingAuth from "./LoadingAuth";
 
-export function PublicRoute() {
+const PublicRoute = () => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <LoadingAuth />;
+    return <LoadingPage />;
   }
 
   if (user) {
@@ -14,4 +14,6 @@ export function PublicRoute() {
   }
 
   return <Outlet />;
-}
+};
+
+export default PublicRoute;

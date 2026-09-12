@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import FormInput from "@/components/FormInput";
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { AuthApiError } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,7 +22,7 @@ const Register = () => {
       setError("");
       setLoading(true);
 
-      await signUp(email, password);
+      await signUp(name, email, password);
 
       navigate("/painel", { replace: true });
     } catch (error: AuthApiError | any) {
@@ -37,6 +38,13 @@ const Register = () => {
         className="flex flex-col gap-4 w-1/3 mt-20"
         onSubmit={handleSubmit}
       >
+        <FormInput
+          label="Name"
+          type="text"
+          placeholder="Nome Completo"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <FormInput
           label="Email"
           type="email"
